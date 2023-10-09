@@ -1,5 +1,7 @@
 ** THis has been forked from the original repo. **
 
+[![Build Status](http://34.130.27.180:8080/buildStatus/icon?job=Instavote%2Fworker-build)](http://34.130.27.180:8080/job/Instavote/job/worker-build/)
+
 Example Voting App
 =========
 
