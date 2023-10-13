@@ -1,0 +1,42 @@
+pipeline {
+    agent any
+    tools {
+        nodejs 'NodeJS 8.9.4'
+    }
+    
+    stages {
+        stage("build") {
+            when {
+                changeset "**/result/**"
+            }
+            steps {
+                echo 'Building result app'
+                dir('result') {
+                    sh 'npm install'
+                }
+            }
+        }
+        
+        stage("test") {
+            when {
+                changeset "**/result/**"
+            }
+            steps {
+                dir('result') {
+                    sh '''
+                        npm install
+                        npm test
+                    '''
+                }
+            }
+        }
+    }
+    
+    post {
+        always {
+            echo 'Send a slack message'
+            echo 'Building multribranch pipeline for worker is completed..'
+        }
+    }
+}
+
