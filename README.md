@@ -1,5 +1,4 @@
-** This has been forked from the original repo. **
-** Made a change **
+filename: README.md
 
 Example Voting App
 =========
