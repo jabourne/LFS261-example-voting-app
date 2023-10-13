@@ -16,18 +16,6 @@ pipeline {
         
         stage("test") {
             steps {
-                echo 'Running Unit Tests on worker app'
-            }
-        }
-        
-        stage("package") {
-            steps {
-                echo 'Packaging worker app'
-            }
-        }
-        
-        stage("test") {
-            steps {
                 sh 'mvn clean test'
             }
         }
