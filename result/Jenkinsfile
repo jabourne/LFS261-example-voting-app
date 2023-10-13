@@ -35,7 +35,7 @@ pipeline {
     post {
         always {
             echo 'Send a slack message'
-            echo 'Building multribranch pipeline for worker is completed..'
+            echo 'Building multibranch pipeline for worker is completed..'
         }
     }
 }
