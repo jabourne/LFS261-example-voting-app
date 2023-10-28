@@ -1,5 +1,6 @@
 pipeline {
   agent none
+
   stages {
     stage("worker build") {
       agent {
@@ -15,12 +16,12 @@ pipeline {
             
       steps {
         echo 'Compiling worker app'
-          dir('worker') {
-            sh 'mvn compile'
-          }
+        dir('worker') {
+          sh 'mvn compile'
         }
       }
-    }      
+    }
+
     stage("worker test") {
       when {
         changeset "**/worker/**"
