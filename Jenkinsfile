@@ -13,6 +13,19 @@ pipeline {
         changeset "**/worker/**"
       }
             
+      steps {
+        echo 'Compiling worker app'
+          dir('worker') {
+            sh 'mvn compile'
+          }
+        }
+      }
+    }      
+    stage("worker test") {
+      when {
+        changeset "**/worker/**"
+      }
+              
       agent {
         docker {
           image 'maven:3.6.1-jdk-8-slim'
@@ -21,54 +34,34 @@ pipeline {
       }
   
       steps {
-        echo 'Compiling worker app'
-          dir('worker') {
-            sh 'mvn compile'
-          }
+        echo 'running unit tests on worker app'
+        dir('worker') {
+          sh 'mvn clean test'
         }
       }
+    }
           
-      stage("worker test") {
-        when {
-          changeset "**/worker/**"
-        }
+    stage("worker package") {
+      when {
+        branch 'master'
+        changeset "**/worker/**"
+      }
               
-        agent {
-          docker {
-            image 'maven:3.6.1-jdk-8-slim'
-            args '-v $HOME/.m2:/root/.m2'
-          }
-        }
-  
-        steps {
-          echo 'running unit tests on worker app'
-          dir('worker') {
-            sh 'mvn clean test'
-          }
+      agent {
+        docker {
+          image 'maven:3.6.1-jdk-8-slim'
+          args '-v $HOME/.m2:/root/.m2'
         }
       }
-          
-      stage("worker package") {
-        when {
-          branch 'master'
-          changeset "**/worker/**"
-        }
-              
-        agent {
-          docker {
-            image 'maven:3.6.1-jdk-8-slim'
-            args '-v $HOME/.m2:/root/.m2'
-          }
-        }
   
-        steps {
-          echo "Packaging worker app int a jarfile"
-          dir('worker') {
-            sh 'mvn package -DskipTests'
-            archiveArtifacts artifacts: '**/target/*.jar', fingerprint: true
-          }
+      steps {
+        echo "Packaging worker app int a jarfile"
+        dir('worker') {
+          sh 'mvn package -DskipTests'
+          archiveArtifacts artifacts: '**/target/*.jar', fingerprint: true
         }
       }
+    }
 
       stage("worker docker-package") {
         agent any
