@@ -22,7 +22,7 @@ echo "I: Launching integration test..."
 # submit a vote. Will return an error if it fails to submit or store vote in redis
 # Fail integration test if  it returns exit code 0 (error state)
 
-curl -sS -X POST --data "vote=b" http://vote | grep -i erro
+curl -sS -X POST --data "vote=b" http://vote | grep -i error
 
 if [ $? -eq 0 ]
 then
